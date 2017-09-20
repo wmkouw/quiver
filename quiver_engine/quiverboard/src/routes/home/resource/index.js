@@ -1,4 +1,4 @@
-export const fetchInputs = () => fetch(`${QUIVER_URL}/feeds`);
+export const fetchInputs = () => fetch(`${QUIVER_URL}/inputs`);
 
 export const fetchModel = () => fetch(`${QUIVER_URL}/model`);
 

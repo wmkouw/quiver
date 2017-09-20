@@ -56,8 +56,8 @@ export default class Dashboard extends Component {
                         this.props.inputs.map(
                             inputSrc => <div className={
                                 `input-container ${this.props.currentInput === inputSrc ? 'selected-input' : ''}`
-                            } key={inputSrc} onClick={() => this.props.setCurrentInput(inputSrc)}>
-                                <img width={100} height={100} src={`${QUIVER_URL}/feed-file/${inputSrc}`} />
+                            } key={inputSrc} onClick={() => this.props.setCurrentInput(inputSrc.substr(0, inputSrc.lastIndexOf(".")) + ".npy")}>
+                                <img width={100} height={100} src={`${QUIVER_URL}/input-file/${inputSrc}`} />
                             </div>
                         )
                     }</div>

@@ -21,6 +21,8 @@ from quiver_engine.util import (
 from quiver_engine.file_utils import list_sig_npy_files, list_sig_png_files
 from quiver_engine.vis_utils import save_layer_outputs
 
+import quiver_engine.timeseries_visualization as tsv
+
 
 def get_app(model, classes, top, html_base_dir, temp_folder='./tmp', input_folder='./'):
     '''
@@ -63,7 +65,7 @@ def get_app(model, classes, top, html_base_dir, temp_folder='./tmp', input_folde
 
     @app.route('/feed-file/<path>')
     def get_feed_file(path):
-        npypath = path[:-3]+'npy'
+        npypath = path[:-3] + 'npy'
         return send_from_directory(abspath(input_folder), npypath)
 
     @app.route('/input-file/<path>')
@@ -84,8 +86,17 @@ def get_app(model, classes, top, html_base_dir, temp_folder='./tmp', input_folde
 
     @app.route('/inputs')
     def get_inputs():
-        return jsonify(list_sig_npy_files(input_folder))
-        # return jsonify(list_sig_png_files(input_folder))
+        # return jsonify(list_sig_npy_files(input_folder))
+        npy_files = list_sig_npy_files(input_folder)
+        png_files = list_sig_png_files(input_folder)
+        unvisualized_npy_files = [fn for fn in npy_files if fn[:-4] not in [fn[:-4] for fn in png_files]]
+        for fn in unvisualized_npy_files:
+            timeseries = tsv.np.load(input_folder + '/' + fn)[0]  # element 0, because network thingies expect [?,bins,channels] shape,
+                                                                  # so for these  single timeseries, ? = 1 and we can just index it out
+            # print(timeseries, timeseries.shape)
+            ts_plot = tsv.plot_timeseries(timeseries, 1)
+            ts_plot['fig'].savefig(input_folder + '/' + fn[:-3] + 'png')
+        return jsonify(list_sig_png_files(input_folder))
 
     @app.route('/layer/<layer_name>/<input_path>')
     def get_layer_outputs(layer_name, input_path):

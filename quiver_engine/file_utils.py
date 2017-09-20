@@ -13,6 +13,7 @@ def save_layer_sig(layer_outputs, layer_name, temp_folder, input_path):
     fn_png = get_output_filename(layer_name, temp_folder, input_path, ext='png')
 
     # Make visualization of layer ouput
+    print(layer_outputs, layer_outputs.shape)
     time_plot = plot_timeseries(np.atleast_2d(layer_outputs),dt=0.01)
     time_plot['fig'].savefig(fn_png)
 
