@@ -18,7 +18,7 @@ from quiver_engine.util import (
     validate_launch
 )
 
-from quiver_engine.file_utils import list_sig_files
+from quiver_engine.file_utils import list_sig_npy_files, list_sig_png_files
 from quiver_engine.vis_utils import save_layer_outputs
 
 
@@ -50,20 +50,21 @@ def get_app(model, classes, top, html_base_dir, temp_folder='./tmp', input_folde
     @app.route('/')
     def home():
         return send_from_directory(
-            join(html_base_dir, 'quiverboard/dist'),
-            'index.html'
-        )
+            join(html_base_dir, 'quiverboard/dist'), 'index.html')
 
     @app.route('/<path>')
     def get_board_files(path):
         return send_from_directory(
-            join(html_base_dir, 'quiverboard/dist'),
-            path
-        )
+            join(html_base_dir, 'quiverboard/dist'), path)
 
     @app.route('/temp-file/<path>')
     def get_temp_file(path):
         return send_from_directory(abspath(temp_folder), path)
+
+    @app.route('/feed-file/<path>')
+    def get_feed_file(path):
+        npypath = path[:-3]+'npy'
+        return send_from_directory(abspath(input_folder), npypath)
 
     @app.route('/input-file/<path>')
     def get_input_file(path):
@@ -77,10 +78,14 @@ def get_app(model, classes, top, html_base_dir, temp_folder='./tmp', input_folde
     def get_config():
         return jsonify(json.loads(model.to_json()))
 
+    @app.route('/feeds')
+    def get_feeds():
+        return jsonify(list_sig_npy_files(input_folder))
 
     @app.route('/inputs')
     def get_inputs():
-        return jsonify(list_sig_files(input_folder))
+        return jsonify(list_sig_npy_files(input_folder))
+        # return jsonify(list_sig_png_files(input_folder))
 
     @app.route('/layer/<layer_name>/<input_path>')
     def get_layer_outputs(layer_name, input_path):

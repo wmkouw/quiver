@@ -13,13 +13,14 @@ def save_layer_outputs(input_sig, model, layer_name, temp_folder, input_path):
             #correct for channel location difference betwen TF and Theano
             layer_outputs = np.rollaxis(layer_outputs, 0, 3)
 
-        for channel in range(layer_outputs.shape[1]):
-            save_layer_sig(
-                layer_outputs[:, channel],
-                layer_name,
-                channel,
-                temp_folder,
-                input_path
-            )
+        # for channel in range(layer_outputs.shape[1]):
+        #     save_layer_sig(
+        #         layer_outputs[:, channel],
+        #         layer_name,
+        #         channel,
+        #         temp_folder,
+        #         input_path
+        #     )
+        save_layer_sig(layer_outputs, layer_name, temp_folder, input_path)
 
         return None
