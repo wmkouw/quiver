@@ -13,12 +13,12 @@ from flask_cors import CORS
 from gevent.wsgi import WSGIServer
 
 from quiver_engine.util import (
-    load_img, safe_jsonify, decode_predictions,
+    load_sig, safe_jsonify, decode_predictions,
     get_input_config, get_evaluation_context,
     validate_launch
 )
 
-from quiver_engine.file_utils import list_img_files
+from quiver_engine.file_utils import list_sig_files
 from quiver_engine.vis_utils import save_layer_outputs
 
 
@@ -36,7 +36,7 @@ def get_app(model, classes, top, html_base_dir, temp_folder='./tmp', input_folde
     :return:
     '''
 
-    single_input_shape, input_channels = get_input_config(model)
+    length_time, num_channels = get_input_config(model)
 
     app = Flask(__name__)
     app.threaded = True
@@ -69,8 +69,6 @@ def get_app(model, classes, top, html_base_dir, temp_folder='./tmp', input_folde
     def get_input_file(path):
         return send_from_directory(abspath(input_folder), path)
 
-
-
     '''
         Computations
     '''
@@ -82,17 +80,13 @@ def get_app(model, classes, top, html_base_dir, temp_folder='./tmp', input_folde
 
     @app.route('/inputs')
     def get_inputs():
-        return jsonify(list_img_files(input_folder))
+        return jsonify(list_sig_files(input_folder))
 
     @app.route('/layer/<layer_name>/<input_path>')
     def get_layer_outputs(layer_name, input_path):
         return jsonify(
             save_layer_outputs(
-                load_img(
-                    join(abspath(input_folder), input_path),
-                    single_input_shape,
-                    grayscale=input_channels == 1
-                ),
+                load_sig(join(abspath(input_folder), input_path)),
                 model,
                 layer_name,
                 temp_folder,
@@ -105,13 +99,7 @@ def get_app(model, classes, top, html_base_dir, temp_folder='./tmp', input_folde
         with get_evaluation_context():
             return safe_jsonify(
                 decode_predictions(
-                    model.predict(
-                        load_img(
-                            join(abspath(input_folder), input_path),
-                            single_input_shape,
-                            grayscale=(input_channels == 1)
-                        )
-                    ),
+                    model.predict(load_sig(join(abspath(input_folder), input_path))),
                     classes,
                     top
                 )

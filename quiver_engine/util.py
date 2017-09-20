@@ -2,7 +2,6 @@ from __future__ import absolute_import, division, print_function
 import json
 from flask.json import jsonify
 import numpy as np
-from keras.preprocessing import image
 import keras.backend as K
 from contextlib import contextmanager
 from quiver_engine.imagenet_utils import preprocess_input, decode_imagenet_predictions
@@ -34,12 +33,12 @@ def get_input_config(model):
     '''
 
     return (
-        model.get_input_shape_at(0)[2:4],
+        model.get_input_shape_at(0)[2],
         model.get_input_shape_at(0)[1]
     ) if K.image_dim_ordering() == 'th' else (
         #tf ordering
-        model.get_input_shape_at(0)[1:3],
-        model.get_input_shape_at(0)[3]
+        model.get_input_shape_at(0)[1],
+        model.get_input_shape_at(0)[2]
     )
 
 def decode_predictions(preds, classes, top):
@@ -58,32 +57,8 @@ def decode_predictions(preds, classes, top):
         results.append(result)
     return results
 
-# util function to convert a tensor into a valid image
-def deprocess_image(x):
-    # normalize tensor: center on 0., ensure std is 0.1
-    x -= x.mean()
-    x /= (x.std() + 1e-5)
-    x *= 0.1
-
-    # clip to [0, 1]
-    x += 0.5
-    x = np.clip(x, 0, 1)
-
-    return x
-
-def load_img_scaled(input_path, target_shape, grayscale=False):
-    return np.expand_dims(
-        image.img_to_array(image.load_img(input_path, target_size=target_shape, grayscale=grayscale)) / 255.0,
-        axis=0
-    )
-
-def load_img(input_path, target_shape, grayscale=False):
-    img = image.load_img(input_path, target_size=target_shape, grayscale=grayscale)
-    img_arr = np.expand_dims(image.img_to_array(img), axis=0)
-    if not grayscale:
-        img_arr = preprocess_input(img_arr)
-    return img_arr
-
+def load_sig(input_path):
+    return np.load(input_path)
 
 def get_jsonable_obj(obj):
     return json.loads(get_json(obj))
