@@ -7,7 +7,7 @@ from quiver_engine.layer_result_generators import get_outputs_generator
 def save_layer_outputs(input_sig, model, layer_name, temp_folder, input_path):
 
     with get_evaluation_context():
-        layer_outputs = get_outputs_generator(model, layer_name)(input_img)[0]
+        layer_outputs = get_outputs_generator(model, layer_name)(input_sig)[0]
 
         if K.backend() == 'theano':
             #correct for channel location difference betwen TF and Theano

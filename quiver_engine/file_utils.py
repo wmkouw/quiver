@@ -1,4 +1,5 @@
 import re
+import numpy as np
 from os.path import relpath, abspath
 from os import listdir
 
