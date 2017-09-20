@@ -63,11 +63,6 @@ def get_app(model, classes, top, html_base_dir, temp_folder='./tmp', input_folde
     def get_temp_file(path):
         return send_from_directory(abspath(temp_folder), path)
 
-    @app.route('/feed-file/<path>')
-    def get_feed_file(path):
-        npypath = path[:-3] + 'npy'
-        return send_from_directory(abspath(input_folder), npypath)
-
     @app.route('/input-file/<path>')
     def get_input_file(path):
         return send_from_directory(abspath(input_folder), path)
@@ -79,10 +74,6 @@ def get_app(model, classes, top, html_base_dir, temp_folder='./tmp', input_folde
     @app.route('/model')
     def get_config():
         return jsonify(json.loads(model.to_json()))
-
-    @app.route('/feeds')
-    def get_feeds():
-        return jsonify(list_sig_npy_files(input_folder))
 
     @app.route('/inputs')
     def get_inputs():
