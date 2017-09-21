@@ -43,8 +43,8 @@ def get_input_config(model):
 
 def decode_predictions(preds, classes, top):
     if not classes:
-        print("Warning! you didn't pass your own set of classes for the model therefore imagenet classes are used")
-        return decode_imagenet_predictions(preds, top)
+        print("Warning! you didn't pass your own set of classes for the model")
+        return preds
 
     if len(preds.shape) != 2 or preds.shape[1] != len(classes):
         raise ValueError('you need to provide same number of classes as model prediction output ' + \
@@ -58,7 +58,7 @@ def decode_predictions(preds, classes, top):
     return results
 
 def load_sig(input_path):
-    return np.load(input_path)
+    return np.load(input_path[:-3]+'npy')
 
 def get_jsonable_obj(obj):
     return json.loads(get_json(obj))

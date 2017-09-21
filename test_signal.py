@@ -10,4 +10,4 @@ elif sys.version_info.major == 3:
     model = ks.models.load_model('models/my_bestmodel_py3.h5')
 
 # Launch server
-server.launch(model, classes=range(7), input_folder='input/')
+server.launch(model, input_folder='input/')

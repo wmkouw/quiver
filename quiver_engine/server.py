@@ -89,15 +89,20 @@ def get_app(model, classes, top, html_base_dir, temp_folder='./tmp', input_folde
             ts_plot['fig'].savefig(input_folder + '/' + fn[:-3] + 'png')
         return jsonify(list_sig_png_files(input_folder))
 
+
     @app.route('/layer/<layer_name>/<input_path>')
     def get_layer_outputs(layer_name, input_path):
+        '''
+        Pushes input_path through model and saves layer output (hijacked to save as timeseries-png)
+        Returns list timeseries-png in relpath form
+        '''
         return jsonify(
             save_layer_outputs(
-                load_sig(join(abspath(input_folder), input_path)),
+                load_sig(join(abspath(input_folder), input_path[:-3]+'npy')),
                 model,
                 layer_name,
                 temp_folder,
-                input_path
+                input_path[:-3]+'npy'
             )
         )
 
@@ -106,7 +111,7 @@ def get_app(model, classes, top, html_base_dir, temp_folder='./tmp', input_folde
         with get_evaluation_context():
             return safe_jsonify(
                 decode_predictions(
-                    model.predict(load_sig(join(abspath(input_folder), input_path))),
+                    model.predict(load_sig(join(abspath(input_folder), input_path[:-3]+'npy'))),
                     classes,
                     top
                 )

@@ -13,6 +13,9 @@
 # limitations under the License.
 
 import numpy as np
+import matplotlib as mpl
+mpl.use('agg')
+print(mpl.get_backend())
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 
