@@ -20,7 +20,7 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 
 
-def plot_timeseries(timeseries, dt, ax=None, minimal_layout=True, draw_labels=True, title=None, draw_colorbar=True):
+def plot_timeseries(timeseries, dt, ax=None, minimal_layout=True, draw_labels=True, title=None, draw_colorbar=False):
     """
     @param timeseries: numpy array of shape (T, C) (T timebins by C channels).
     @param dt: time step (in seconds) between timeseries bins.
@@ -59,7 +59,7 @@ def plot_timeseries(timeseries, dt, ax=None, minimal_layout=True, draw_labels=Tr
 
 
 def plot_timeseries_fourier_amplitudes(timeseries, dt, ax=None, minimal_layout=True,
-                                       draw_labels=True, title=None, draw_colorbar=True):
+                                       draw_labels=True, title=None, draw_colorbar=False):
     """
     @param timeseries: numpy array of shape (T, C) (T timebins by C channels).
     @param dt: time step (in seconds) between timeseries bins.
