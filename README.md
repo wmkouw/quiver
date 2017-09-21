@@ -1,16 +1,14 @@
-# Quiver
-[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/quiverEngine/Lobby)
+# Quiver-time
 
-Interactive convnet features visualization for Keras
-
+Interactive neural network layer activations visualization for timeseries data
 
 ![gzqll3](https://cloud.githubusercontent.com/assets/5866348/20253975/f3d56f14-a9e4-11e6-9693-9873a18df5d3.gif)
 
 
+**The quiver-time workflow**
 
-
-**The quiver workflow**
-
+Quiver-time is forked from quiver:
+[Quiver](https://github.com/keplr-io/quiver)
 [Video Demo](https://www.youtube.com/watch?edit=vd&v=tgRW3BRi_FA)
 
 1. Build your model in keras
@@ -21,7 +19,7 @@ Interactive convnet features visualization for Keras
 2. Launch the visualization dashboard with 1 line of code
 
     ```python
-    quiver_engine.server.launch(model, classes=['cat','dog'], input_folder='./imgs')
+    quiver_engine.server.launch(model, classes=['cat','dog'], input_folder='./input')
     ```
 3. Explore layer activations on all the different images in your input folder.
 
@@ -30,16 +28,15 @@ Interactive convnet features visualization for Keras
 
 **Installation**
 
+Create an environment
 ```bash
-    pip install quiver_engine
+    conda env create -f environment.yaml
+    source activate qtime
 ```
-
-If you want the latest version from the repo
-
+And install all packages:
 ```bash
-    pip install git+git://github.com/keplr-io/quiver.git
+pip install .
 ```
-
 
 **Usage**
 
@@ -117,5 +114,3 @@ misc{bianquiver,
   howpublished={\url{https://github.com/keplr-io/quiver}},
 }
 ```
-
-

@@ -8,6 +8,8 @@ try:
 except ImportError:
     pass
 
+with open('requirements.txt') as f:
+required = f.read().splitlines()
 
 setup(
     name='quiver_engine',
@@ -20,12 +22,5 @@ setup(
     include_package_data=True,
     package_dir={'quiver_engine': 'quiver_engine'},
     package_data={'quiver_engine': 'quiverboard/dist/*'},
-    install_requires=[
-        'keras',
-        'flask',
-        'flask_cors',
-        'gevent',
-        'numpy',
-        'pillow'
-    ] + tensorflow_packages
+    install_requires=required + tensorflow_packages
 )
