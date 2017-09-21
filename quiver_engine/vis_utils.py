@@ -8,9 +8,8 @@ from quiver_engine.layer_result_generators import get_outputs_generator
 def save_layer_outputs(input_sig, model, layer_name, temp_folder, input_path):
 
     with get_evaluation_context():
-        layer_outputs = Model(input=model.input,output=model.get_layer(layer_name).output).predict(input_sig, verbose=0)
-        print(layer_outputs.shape)
-        layer_outputs = np.atleast_3d(layer_outputs[0,:,:,:])
+        inter_model = Model(input=model.input,output=model.get_layer(layer_name).output)
+        layer_outputs = np.atleast_3d(inter_model.predict(input_sig, verbose=0)[0])
 
         if K.backend() == 'theano':
             #correct for channel location difference betwen TF and Theano
