@@ -1,4 +1,4 @@
-name: quiver-time
+name: qtime
 channels:
 - conda-forge
 - defaults
@@ -14,7 +14,3 @@ dependencies:
 - tensorflow>=0.12.1
 - ipython
 - jupyter
-- flask
-- flask_cors
-- gevent
-- pillow
