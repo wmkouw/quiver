@@ -31,6 +31,7 @@ Quiver-time is forked from quiver:
 Create an environment
 ```bash
     conda env create -f environment.yaml
+    source activate quiver-time
 ```
 And install all packages:
 ```bash
