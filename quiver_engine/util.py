@@ -42,6 +42,9 @@ def get_input_config(model):
     )
 
 def decode_predictions(preds, classes, top):
+    # Number of classes
+    nK = len(classes)
+
     if not classes:
         print("Warning! you didn't pass your own set of classes for the model")
         return preds
@@ -52,8 +55,13 @@ def decode_predictions(preds, classes, top):
                              preds.shape[1], len(classes)))
     results = []
     for pred in preds:
-        top_indices = pred.argsort()[-top:][::-1]
-        result = [("", classes[i], pred[i]) for i in top_indices]
+
+        if nK >= 10:
+            class_indices = pred.argsort()[-top:][::-1]
+        else:
+            class_indices = range(nK)
+            
+        result = [("", classes[i], pred[i]) for i in class_indices]
         results.append(result)
     return results
 
