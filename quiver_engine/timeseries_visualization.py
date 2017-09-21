@@ -22,7 +22,8 @@ import matplotlib.cm as cm
 
 def plot_timeseries(timeseries, dt=1., ax=None, minimal_layout=True,
                     draw_labels=True, title=None, draw_colorbar=False,
-                    center_zero_color=True, base_height=1., channel_px=5):
+                    center_zero_color=True,
+                    base_height=1., channel_px=5):
     """
     @param timeseries: numpy array of shape (T, C) (T timebins by C channels).
     @param dt: time step (in seconds) between timeseries bins (used for tick units).
@@ -30,13 +31,14 @@ def plot_timeseries(timeseries, dt=1., ax=None, minimal_layout=True,
     N_timebins, N_channels = timeseries.shape
 
     if ax is None:
-        height = base_height
-        width = base_height * (N_timebins / (N_channels * channel_px))
+        height = base_height * channel_px * N_channels
+        width = base_height * N_timebins
         figsize = (width, height)
         if minimal_layout:
             fig, ax = plt.subplots(1, frameon=False, figsize=figsize)
         else:
             fig, ax = plt.subplots(1, figsize=figsize)
+        fig.subplots_adjust(left=0, right=1, bottom=0, top=1)
     else:
         fig = ax.figure
 
@@ -63,12 +65,21 @@ def plot_timeseries(timeseries, dt=1., ax=None, minimal_layout=True,
 
     # plt.tight_layout()
 
-    return {'ax': ax, 'fig': fig, 'im': im, 'cb': cb}
+    return {'ax': ax, 'fig': fig, 'im': im, 'cb': cb,
+            'channel_px': channel_px, 'base_height': base_height,
+            'N_timebins': N_timebins, 'N_channels': N_channels}
 
 
 def generate_timeseries_image(input_data, fn_png, **kwargs):
     plot_results = plot_timeseries(input_data, **kwargs)
-    plot_results['fig'].savefig(fn_png, bbox_inches='tight', pad_inches=0)
+
+    dpi = 1 / plot_results['base_height']
+
+    plot_results['fig'].savefig(fn_png,
+                                # bbox_inches='tight',
+                                pad_inches=0,
+                                dpi=dpi
+                                )
     plt.close(plot_results['fig'])
 
 
