@@ -4,7 +4,7 @@ import numpy as np
 from os.path import relpath, abspath, isfile
 from os import listdir
 
-from quiver_engine.timeseries_visualization import plot_timeseries
+import quiver_engine.timeseries_visualization as tsv
 
 def save_layer_sig(layer_outputs, layer_name, kernel, temp_folder, input_path):
 
@@ -13,8 +13,7 @@ def save_layer_sig(layer_outputs, layer_name, kernel, temp_folder, input_path):
 
     if not isfile(fn_png):
         # Plot and write timeseries per kernel
-        time_plot = plot_timeseries(np.atleast_2d(layer_outputs),dt=0.01)
-        time_plot['fig'].savefig(fn_png, bbox_inches='tight')
+        tsv.generate_timeseries_image(np.atleast_2d(layer_outputs), fn_png)
 
     # Return path to layer output arrays
     return relpath(fn_png, abspath(temp_folder))

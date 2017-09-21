@@ -85,8 +85,7 @@ def get_app(model, classes, top, html_base_dir, temp_folder='./tmp', input_folde
             timeseries = tsv.np.load(input_folder + '/' + fn)[0]  # element 0, because network thingies expect [?,bins,channels] shape,
                                                                   # so for these  single timeseries, ? = 1 and we can just index it out
             # print(timeseries, timeseries.shape)
-            ts_plot = tsv.plot_timeseries(timeseries, 1)
-            ts_plot['fig'].savefig(input_folder + '/' + fn[:-3] + 'png')
+            tsv.generate_timeseries_image(timeseries, input_folder + '/' + fn[:-3] + 'png')
         return jsonify(list_sig_png_files(input_folder))
 
 
