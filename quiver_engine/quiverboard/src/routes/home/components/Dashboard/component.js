@@ -57,7 +57,7 @@ export default class Dashboard extends Component {
                             inputSrc => <div className={
                                 `input-container ${this.props.currentInput === inputSrc ? 'selected-input' : ''}`
                             } key={inputSrc} onClick={() => this.props.setCurrentInput(inputSrc.substr(0, inputSrc.lastIndexOf(".")) + ".npy")}>
-                                <img width={100} height={100} src={`${QUIVER_URL}/input-file/${inputSrc}`} />
+                                <img src={`${QUIVER_URL}/input-file/${inputSrc}`} />
                             </div>
                         )
                     }</div>
@@ -130,10 +130,7 @@ export default class Dashboard extends Component {
 
                                                         this.props.layers[this.props.currentLayer] ? this.props.layers[this.props.currentLayer].map(
                                                             layerImgSrc => (
-                                                                <div key={layerImgSrc} className='layer-img-container' style={{
-                                                                    width: 100,
-                                                                    height: 100
-                                                                }}>
+                                                                <div key={layerImgSrc} className='layer-img-container'>
                                                                     <img className='layer-img-img original-img'
                                                                         // Show input file
                                                                         src={`${QUIVER_URL}/input-file/${this.props.currentInput}`} />
