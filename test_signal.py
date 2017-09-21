@@ -9,5 +9,14 @@ if sys.version_info.major == 2:
 elif sys.version_info.major == 3:
     model = ks.models.load_model('models/my_bestmodel_py3.h5')
 
+# Names of classes of PAMAP2
+classes = ['lying',
+    'sitting',
+    'standing',
+    'walking',
+    'cycling',
+    'vacccuum',
+    'ironing']
+
 # Launch server
-server.launch(model, input_folder='input/')
+server.launch(model, classes=classes, top=7, input_folder='input/')

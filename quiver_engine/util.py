@@ -29,7 +29,7 @@ def get_evaluation_context_getter():
 
 def get_input_config(model):
     '''
-        returns a tuple (inputDimensions, numChannels)
+        returns a tuple (number of timesteps, number of hannels)
     '''
 
     return (
