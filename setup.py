@@ -9,7 +9,7 @@ except ImportError:
     pass
 
 with open('requirements.txt') as f:
-required = f.read().splitlines()
+    required = f.read().splitlines()
 
 setup(
     name='quiver_engine',
